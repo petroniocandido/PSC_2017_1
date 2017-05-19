@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author petronio
  */
-public class Sala {
+public class Sala implements Entidade {
     private int id;
     private String nome;
     private Tipo tipo;
@@ -27,10 +27,12 @@ public class Sala {
         this.capacidade = capacidade;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

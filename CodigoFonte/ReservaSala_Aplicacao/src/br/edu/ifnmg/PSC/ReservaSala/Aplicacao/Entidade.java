@@ -5,16 +5,14 @@
  */
 package br.edu.ifnmg.PSC.ReservaSala.Aplicacao;
 
-import java.util.List;
-
-
-public interface Repositorio<T extends Entidade> {
+/**
+ *
+ * @author petronio
+ */
+public interface Entidade {
     
-    public boolean Salvar(T obj);
+    public void setId(int id);
     
-    public boolean Apagar(T obj);
+    public int getId();
     
-    public T Abrir(int id);
-    
-    public List<T> Buscar(T filtro);
 }
