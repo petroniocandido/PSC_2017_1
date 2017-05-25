@@ -27,15 +27,15 @@ public class ReservaSala_Apresentacao {
     public static void main(String[] args)  {
        
         try {
-            SalaRepositorio salas = new SalaDAO();
+            SalaRepositorio dao = new SalaDAO();
             
-            Sala s = new Sala();
+            Sala s = dao.Abrir(1);
             
-            s.setNome("Teste");
-            s.setTipo(Tipo.AULA);
-            s.setCapacidade(5);
+            System.out.println(s.getNome());
             
-            salas.Salvar(s);
+            s.setNome("Paraná do biteco");
+            
+            dao.Salvar(s);
             
             
         } catch (ClassNotFoundException ex) {

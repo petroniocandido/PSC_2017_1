@@ -10,8 +10,11 @@ import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Repositorio;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,30 +31,39 @@ public abstract class DAOGenerico<T extends Entidade> implements Repositorio<T> 
     }
 
     protected abstract String getConsultaInsert();
+    protected abstract String getConsultaUpdate();
+    protected abstract String getConsultaAbrir();
     
     protected abstract void setParametros(PreparedStatement sql, T obj);
+    protected abstract T setDados(ResultSet resultado);
     
     
     @Override
     public boolean Salvar(T obj) {
         try {
-            // Objeto não está salvo no BD
+            PreparedStatement sql = null;
+            
+            // Objeto não está salvo no BD ---> INSERT
             if(obj.getId() == 0){
                 // Criar a consulta SQL de inserção
-                PreparedStatement sql = conexao.prepareStatement(getConsultaInsert());
-                
-                setParametros(sql, obj);
-                
-                if (sql.executeUpdate() > 0) return true;
-                else return false;
-                
+                sql = conexao.prepareStatement(getConsultaInsert());
+            
+            // Objeto já está salvo no BD ---> UPDATE
             } else {
+                // Criar a consulta SQL de inserção
+                sql = conexao.prepareStatement(getConsultaUpdate());
+            }    
+            
+            setParametros(sql, obj);
 
-            }
+            if (sql.executeUpdate() > 0) 
+                return true;
+            else 
+                return false;
+            
         } catch(Exception ex) {
              return false;
         }
-        return false;
     }
 
     @Override
@@ -61,7 +73,22 @@ public abstract class DAOGenerico<T extends Entidade> implements Repositorio<T> 
 
     @Override
     public T Abrir(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            PreparedStatement sql = conexao.prepareStatement(this.getConsultaAbrir());
+            
+            sql.setInt(1, id);
+            
+            ResultSet resultado = sql.executeQuery();
+            
+            if(resultado.next())
+                return this.setDados(resultado);
+            else 
+                return null;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOGenerico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
