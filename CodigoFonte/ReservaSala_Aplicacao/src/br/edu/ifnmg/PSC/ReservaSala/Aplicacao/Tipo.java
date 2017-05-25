@@ -39,10 +39,16 @@ public enum Tipo {
     }
     
     
-
     @Override
     public String toString() {
         return descricao;
+    }
+    
+    public static Tipo Abrir(int id){
+        for(Tipo t : Tipo.values())
+            if(id == t.getId())
+                return t;
+        return null;
     }
     
     

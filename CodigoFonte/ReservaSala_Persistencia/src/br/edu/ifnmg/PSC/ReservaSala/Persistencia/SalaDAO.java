@@ -37,6 +37,11 @@ public class SalaDAO extends DAOGenerico<Sala> implements SalaRepositorio {
     }
     
     @Override
+    protected String getConsultaDelete() {
+        return "delete from salas where id = ?";
+    }
+    
+    @Override
     protected String getConsultaAbrir() {
         return "select id, nome, tipo, capacidade from salas where id = ?";
     }
@@ -64,7 +69,7 @@ public class SalaDAO extends DAOGenerico<Sala> implements SalaRepositorio {
             Sala obj = new Sala();
             obj.setId( resultado.getInt("id") );
             obj.setNome( resultado.getString("nome") );
-            //obj.setTipo(Tipo.);
+            obj.setTipo(Tipo.Abrir( resultado.getInt("tipo") ));
             obj.setCapacidade( resultado.getInt("capacidade") );
             
             return obj;

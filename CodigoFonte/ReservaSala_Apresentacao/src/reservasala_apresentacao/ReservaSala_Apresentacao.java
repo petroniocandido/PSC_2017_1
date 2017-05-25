@@ -33,18 +33,14 @@ public class ReservaSala_Apresentacao {
             
             System.out.println(s.getNome());
             
-            s.setNome("Paraná do biteco");
-            
-            dao.Salvar(s);
+            dao.Apagar(s);
             
             
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ReservaSala_Apresentacao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(ReservaSala_Apresentacao.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ViolacaoRegraNegocioException ex) {
-            Logger.getLogger(ReservaSala_Apresentacao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
     
 }

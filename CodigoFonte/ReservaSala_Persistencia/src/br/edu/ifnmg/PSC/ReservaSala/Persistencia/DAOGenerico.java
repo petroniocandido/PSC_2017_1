@@ -32,6 +32,7 @@ public abstract class DAOGenerico<T extends Entidade> implements Repositorio<T> 
 
     protected abstract String getConsultaInsert();
     protected abstract String getConsultaUpdate();
+    protected abstract String getConsultaDelete();
     protected abstract String getConsultaAbrir();
     
     protected abstract void setParametros(PreparedStatement sql, T obj);
@@ -68,7 +69,20 @@ public abstract class DAOGenerico<T extends Entidade> implements Repositorio<T> 
 
     @Override
     public boolean Apagar(T obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            PreparedStatement sql = conexao.prepareStatement(getConsultaDelete());
+            
+            sql.setInt(1, obj.getId());
+            
+            if (sql.executeUpdate() > 0) {
+                obj = null;
+                return true;
+            } else 
+                return false;
+            
+        } catch(Exception ex) {
+             return false;
+        }
     }
 
     @Override
