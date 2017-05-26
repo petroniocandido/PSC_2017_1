@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,8 @@ import java.util.logging.Logger;
 public abstract class DAOGenerico<T extends Entidade> implements Repositorio<T> {
     
     private Connection conexao;
+    
+    private String where = "";
 
     public DAOGenerico() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
@@ -34,6 +37,8 @@ public abstract class DAOGenerico<T extends Entidade> implements Repositorio<T> 
     protected abstract String getConsultaUpdate();
     protected abstract String getConsultaDelete();
     protected abstract String getConsultaAbrir();
+    protected abstract String getConsultaBuscar();
+    protected abstract void setBuscaFiltros(T filtro);
     
     protected abstract void setParametros(PreparedStatement sql, T obj);
     protected abstract T setDados(ResultSet resultado);
@@ -104,10 +109,56 @@ public abstract class DAOGenerico<T extends Entidade> implements Repositorio<T> 
         }
         return null;
     }
+    
+    protected DAOGenerico<T> adicionarFiltro(String campo, String valor){
+        if(where.length() > 0)
+            where += " and ";
+        
+        where += campo + " = '"+ valor + "'";
+        
+        return this;
+    }
+    
+    protected DAOGenerico<T> adicionarFiltro(String campo, int valor){
+        if(where.length() > 0)
+            where += " and ";
+        
+        where += campo + " = "+ Integer.toString(valor);
+        
+        return this;
+    }
 
     @Override
     public List<T> Buscar(T filtro) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        // Cria uma lista vazia com o tipo T
+        List<T> lista = new ArrayList<>();
+        
+        try {
+            
+            if(filtro != null)
+                this.setBuscaFiltros(filtro);
+            
+            String sqlfinal = this.getConsultaBuscar();
+            
+            if(! where.isEmpty())
+                sqlfinal += " where " + where;
+            
+            PreparedStatement sql = conexao.prepareStatement(sqlfinal );
+                       
+            ResultSet resultado = sql.executeQuery();
+            
+            while(resultado.next())
+                lista.add( this.setDados(resultado) );
+            
+            this.where = "";
+            
+            return lista;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOGenerico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
 }

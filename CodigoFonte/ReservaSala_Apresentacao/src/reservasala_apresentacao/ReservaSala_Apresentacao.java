@@ -7,11 +7,9 @@ package reservasala_apresentacao;
 
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Sala;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.SalaRepositorio;
-import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Tipo;
-import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.ViolacaoRegraNegocioException;
-import br.edu.ifnmg.PSC.ReservaSala.Persistencia.DAOGenerico;
 import br.edu.ifnmg.PSC.ReservaSala.Persistencia.SalaDAO;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,11 +27,16 @@ public class ReservaSala_Apresentacao {
         try {
             SalaRepositorio dao = new SalaDAO();
             
-            Sala s = dao.Abrir(1);
+            /*
+            for(int i = 4; i < 16; i++){
+                Sala s = new Sala(0, "Sala nº " + Integer.toString(i), Tipo.AULA, i + 4);
+                dao.Salvar(s);
+            }*/
             
-            System.out.println(s.getNome());
+            List<Sala> resultado = dao.Buscar(new Sala(0,null,null,12));
             
-            dao.Apagar(s);
+            for(Sala s : resultado)
+                System.out.println(s);
             
             
         } catch (ClassNotFoundException ex) {

@@ -79,6 +79,26 @@ public class SalaDAO extends DAOGenerico<Sala> implements SalaRepositorio {
         }
         return null;
     }
+    
+    @Override
+    protected String getConsultaBuscar() {
+        return "select id, nome, tipo, capacidade from salas ";
+    }
+
+    @Override
+    protected void setBuscaFiltros(Sala filtro) {
+        if(filtro.getId() > 0)
+            this.adicionarFiltro("id", filtro.getId());
+        
+        if(filtro.getNome() != null && !filtro.getNome().isEmpty())
+            this.adicionarFiltro("nome", filtro.getNome());
+        
+        if(filtro.getCapacidade() > 4)
+            this.adicionarFiltro("capacidade", filtro.getCapacidade());
+        
+        if(filtro.getTipo() != null)
+            this.adicionarFiltro("tipo", filtro.getTipo().getId());
+    }
 
     
 }
