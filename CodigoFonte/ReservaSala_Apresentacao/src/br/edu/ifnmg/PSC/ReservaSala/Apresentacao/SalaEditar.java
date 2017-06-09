@@ -25,6 +25,20 @@ public class SalaEditar extends javax.swing.JInternalFrame {
     SalaRepositorio repositorio;
     
     Sala entidade;
+
+    public Sala getEntidade() {
+        return entidade;
+    }
+
+    public void setEntidade(Sala entidade) {
+        this.entidade = entidade;
+        
+        txtNome.setText( entidade.getNome() );
+        cbxTipo.setSelectedItem( entidade.getTipo() );
+        spnCapacidade.setValue( entidade.getCapacidade() );
+    }
+    
+    
     
     /**
      * Creates new form SalaEditar
