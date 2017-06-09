@@ -56,10 +56,10 @@ public class SalaEditar extends javax.swing.JInternalFrame {
         lblTipo = new javax.swing.JLabel();
         cbxTipo = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        txtCapacidade = new javax.swing.JFormattedTextField();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnApagar = new javax.swing.JButton();
+        spnCapacidade = new javax.swing.JSpinner();
 
         setClosable(true);
         setTitle("Editar Sala");
@@ -79,8 +79,21 @@ public class SalaEditar extends javax.swing.JInternalFrame {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnApagar.setText("Apagar");
+        btnApagar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnApagarActionPerformed(evt);
+            }
+        });
+
+        spnCapacidade.setModel(new javax.swing.SpinnerNumberModel(5, 5, null, 1));
+        spnCapacidade.setEditor(new javax.swing.JSpinner.NumberEditor(spnCapacidade, ""));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -94,16 +107,16 @@ public class SalaEditar extends javax.swing.JInternalFrame {
                     .addComponent(lblNome))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSalvar)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(spnCapacidade, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSalvar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(75, 75, 75)
                         .addComponent(btnCancelar)
                         .addGap(64, 64, 64)
-                        .addComponent(btnApagar))
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtCapacidade, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(cbxTipo, javax.swing.GroupLayout.Alignment.LEADING, 0, 227, Short.MAX_VALUE)))
+                        .addComponent(btnApagar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -120,8 +133,8 @@ public class SalaEditar extends javax.swing.JInternalFrame {
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtCapacidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46)
+                    .addComponent(spnCapacidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnCancelar)
@@ -134,12 +147,20 @@ public class SalaEditar extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         
+        if(txtNome.getText().isEmpty() || cbxTipo.getSelectedItem() == null 
+                || spnCapacidade.getValue() == null){
+            JOptionPane.showMessageDialog(rootPane, "Todos os campos são de preenchimento obrigatório!");
+            return;
+        }
+            
+        
+        
         if(JOptionPane.showConfirmDialog(rootPane, "Deseja realmente salvar o objeto?") == 0 ){
 
             try {
 
                 entidade.setNome( txtNome.getText() );
-                entidade.setCapacidade( Integer.parseInt( txtCapacidade.getText() ) );
+                entidade.setCapacidade( Integer.parseInt(spnCapacidade.getValue().toString()) );
                 entidade.setTipo( (Tipo) cbxTipo.getSelectedItem() );
 
             } catch (ViolacaoRegraNegocioException ex) {
@@ -162,6 +183,23 @@ public class SalaEditar extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_btnSalvarActionPerformed
 
+    private void btnApagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApagarActionPerformed
+        if(JOptionPane.showConfirmDialog(rootPane, "Deseja realmente apagar o registro?") == 0 ){
+            if(repositorio.Apagar(entidade)){
+                JOptionPane.showMessageDialog(rootPane, "Registro removido com sucesso!");
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Falha ao remover o registro!");
+            }
+        }  else {
+            JOptionPane.showMessageDialog(rootPane, "Operação Cancelada!");
+        }
+    }//GEN-LAST:event_btnApagarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApagar;
@@ -171,7 +209,7 @@ public class SalaEditar extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblTipo;
-    private javax.swing.JFormattedTextField txtCapacidade;
+    private javax.swing.JSpinner spnCapacidade;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 }

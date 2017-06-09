@@ -32,6 +32,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         mnuSalas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Reserva de Salas");
+        setAlwaysOnTop(true);
 
         jMenu1.setText("Cadastros");
 
