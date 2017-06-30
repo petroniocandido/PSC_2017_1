@@ -203,7 +203,7 @@ public class SalaBuscar extends TelaBusca<Sala> {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public int retornaId() {
+    public int retornaIdSelecionado() {
         int linha = tblBusca.getSelectedRow();
         int id = Integer.parseInt( tblBusca.getModel().getValueAt(linha, 0).toString() );
         return id;

@@ -24,7 +24,7 @@ public abstract class TelaBusca<T extends Entidade> extends javax.swing.JInterna
     
     Class tipo_tela;
     
-    public abstract int retornaId();
+    public abstract int retornaIdSelecionado();
     
     public abstract void preencheFiltro();
     
@@ -68,7 +68,7 @@ public abstract class TelaBusca<T extends Entidade> extends javax.swing.JInterna
     }
     
     public void editar(){
-        int id = retornaId();
+        int id = retornaIdSelecionado();
         
         filtro = repositorio.Abrir(id);
         
