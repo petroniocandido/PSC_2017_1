@@ -64,7 +64,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnuSalasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSalasActionPerformed
-        SalaBuscar tela = new SalaBuscar();
+        SalaBuscar tela = new SalaBuscar(Repositorios.getSalaRepositorio(), SalaEditar.class);
         
         this.add(tela);
         tela.setVisible(true);

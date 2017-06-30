@@ -5,6 +5,7 @@
  */
 package br.edu.ifnmg.PSC.ReservaSala.Apresentacao;
 
+import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Repositorio;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Sala;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.SalaRepositorio;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Tipo;
@@ -15,26 +16,22 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
  * @author petronio
  */
-public class SalaBuscar extends javax.swing.JInternalFrame {
+public class SalaBuscar extends TelaBusca<Sala> {
 
-    SalaRepositorio repositorio;
-    
-    Sala filtro = new Sala();
-    
     /**
      * Creates new form SalaBuscar
      */
-    public SalaBuscar() {
+    public SalaBuscar(Repositorio<Sala> repositorio, Class tipo_tela) {
+        super(repositorio, tipo_tela);
         initComponents();
         
-        repositorio = Repositorios.getSalaRepositorio();
-        
+        filtro = new Sala();
+                
         ComboBoxModel model = new DefaultComboBoxModel(Tipo.values());
         cbxTipo.setModel(model);
         
@@ -172,10 +169,48 @@ public class SalaBuscar extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+       
+        buscar();
         
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         
-        // PREENCHE OS FILTROS DE BUSCA
+        novo();
         
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        
+        editar();
+        
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JComboBox<String> cbxTipo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSpinner spnCapacidade;
+    private javax.swing.JTable tblBusca;
+    private javax.swing.JTextField txtNome;
+    // End of variables declaration//GEN-END:variables
+
+    @Override
+    public int retornaId() {
+        int linha = tblBusca.getSelectedRow();
+        int id = Integer.parseInt( tblBusca.getModel().getValueAt(linha, 0).toString() );
+        return id;
+    }
+
+    @Override
+    public void preencheFiltro() {
         try {
             if(! txtNome.getText().isEmpty())
                 filtro.setNome(txtNome.getText());
@@ -185,11 +220,10 @@ public class SalaBuscar extends javax.swing.JInternalFrame {
         } catch (ViolacaoRegraNegocioException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         }
-        
-        // BUSCA NO REPOSITÓRIO
-        
-        List<Sala> listagem = repositorio.Buscar(filtro);
-        
+    }
+
+    @Override
+    public void preencheTabela(List<Sala> listagem) {
         // Table Model 
         
         DefaultTableModel modelo = new DefaultTableModel();
@@ -214,56 +248,5 @@ public class SalaBuscar extends javax.swing.JInternalFrame {
         }
         
         tblBusca.setModel(modelo);
-        
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        
-        SalaEditar telaeditar = new SalaEditar();
-        
-        telaeditar.setEntidade(filtro);
-        
-        this.getParent().add(telaeditar);
-        
-        telaeditar.setVisible(true);
-        
-        this.setVisible(false);
-        
-    }//GEN-LAST:event_btnNovoActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        
-        int linha = tblBusca.getSelectedRow();
-        
-        int id = Integer.parseInt( tblBusca.getModel().getValueAt(linha, 0).toString() );
-        
-        filtro = repositorio.Abrir(id);
-        
-        SalaEditar telaeditar = new SalaEditar();
-        
-        telaeditar.setEntidade(filtro);
-        
-        this.getParent().add(telaeditar);
-        
-        telaeditar.setVisible(true);
-        
-        this.setVisible(false);
-        
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnNovo;
-    private javax.swing.JComboBox<String> cbxTipo;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSpinner spnCapacidade;
-    private javax.swing.JTable tblBusca;
-    private javax.swing.JTextField txtNome;
-    // End of variables declaration//GEN-END:variables
+    }
 }

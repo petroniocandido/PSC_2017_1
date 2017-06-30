@@ -5,55 +5,51 @@
  */
 package br.edu.ifnmg.PSC.ReservaSala.Apresentacao;
 
-import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Entidade;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Sala;
-import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.SalaRepositorio;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Tipo;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.ViolacaoRegraNegocioException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author petronio
  */
-public class SalaEditar extends javax.swing.JInternalFrame {
+public class SalaEditar extends TelaEdicao<Sala> {
 
-    SalaRepositorio repositorio;
-    
-    Sala entidade;
 
-    public Sala getEntidade() {
-        return entidade;
-    }
-
-    public void setEntidade(Sala entidade) {
-        this.entidade = entidade;
+    /**
+     * Creates new form SalaEditar
+     */
+    public SalaEditar() {
+        super();
+        initComponents();
+       
+        entidade = new Sala();
         
+        ComboBoxModel model = new DefaultComboBoxModel(Tipo.values());
+        cbxTipo.setModel(model);
+       
+    }
+    
+    @Override
+    public void carregaCampos() {
         txtNome.setText( entidade.getNome() );
         cbxTipo.setSelectedItem( entidade.getTipo() );
         spnCapacidade.setValue( entidade.getCapacidade() );
     }
     
+    @Override
+    public void carregaObjeto() throws ViolacaoRegraNegocioException {
+        entidade.setNome( txtNome.getText() );
+        entidade.setCapacidade( Integer.parseInt(spnCapacidade.getValue().toString()) );
+        entidade.setTipo( (Tipo) cbxTipo.getSelectedItem() );
+    }
     
-    
-    /**
-     * Creates new form SalaEditar
-     */
-    public SalaEditar() {
-        initComponents();
-        
-        repositorio = Repositorios.getSalaRepositorio();
-        
-        entidade = new Sala();
-        
-        ComboBoxModel model = new DefaultComboBoxModel(Tipo.values());
-        cbxTipo.setModel(model);
-        
-        
+    @Override
+    public boolean verificarCamposObrigatorios() {
+        return !txtNome.getText().isEmpty() || cbxTipo.getSelectedItem() != null 
+                || spnCapacidade.getValue() != null;
     }
 
     /**
@@ -160,58 +156,15 @@ public class SalaEditar extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
-        if(txtNome.getText().isEmpty() || cbxTipo.getSelectedItem() == null 
-                || spnCapacidade.getValue() == null){
-            JOptionPane.showMessageDialog(rootPane, "Todos os campos são de preenchimento obrigatório!");
-            return;
-        }
-            
-        
-        
-        if(JOptionPane.showConfirmDialog(rootPane, "Deseja realmente salvar o objeto?") == 0 ){
-
-            try {
-
-                entidade.setNome( txtNome.getText() );
-                entidade.setCapacidade( Integer.parseInt(spnCapacidade.getValue().toString()) );
-                entidade.setTipo( (Tipo) cbxTipo.getSelectedItem() );
-
-            } catch (ViolacaoRegraNegocioException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-                return; 
-            }
-            
-            if(repositorio.Salvar(entidade)){
-                JOptionPane.showMessageDialog(rootPane, "Registro salvo com sucesso!");
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Falha ao salvar o registro!");
-            }
-            
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Operação Cancelada!");
-        }
-        
-        
-            
-        
+        salvar();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnApagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApagarActionPerformed
-        if(JOptionPane.showConfirmDialog(rootPane, "Deseja realmente apagar o registro?") == 0 ){
-            if(repositorio.Apagar(entidade)){
-                JOptionPane.showMessageDialog(rootPane, "Registro removido com sucesso!");
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Falha ao remover o registro!");
-            }
-        }  else {
-            JOptionPane.showMessageDialog(rootPane, "Operação Cancelada!");
-        }
+        apagar();
     }//GEN-LAST:event_btnApagarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        this.setVisible(false);
-        this.dispose();
+        cancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
 
@@ -226,4 +179,6 @@ public class SalaEditar extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner spnCapacidade;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
+
+    
 }
