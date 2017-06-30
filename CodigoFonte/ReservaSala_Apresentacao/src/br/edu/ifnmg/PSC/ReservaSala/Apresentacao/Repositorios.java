@@ -5,7 +5,9 @@
  */
 package br.edu.ifnmg.PSC.ReservaSala.Apresentacao;
 
+import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.PessoaRepositorio;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.SalaRepositorio;
+import br.edu.ifnmg.PSC.ReservaSala.Persistencia.PessoaDAO;
 import br.edu.ifnmg.PSC.ReservaSala.Persistencia.SalaDAO;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -29,6 +31,20 @@ public class Repositorios {
                 Logger.getLogger(Repositorios.class.getName()).log(Level.SEVERE, null, ex);
             }
         return salaDAO;
+    }
+    
+    static PessoaRepositorio pessoaDAO = null;
+    
+    public static PessoaRepositorio getPessoaRepositorio(){
+        if(pessoaDAO == null)
+            try {
+                pessoaDAO = new PessoaDAO();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Repositorios.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Repositorios.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        return pessoaDAO;
     }
     
 }

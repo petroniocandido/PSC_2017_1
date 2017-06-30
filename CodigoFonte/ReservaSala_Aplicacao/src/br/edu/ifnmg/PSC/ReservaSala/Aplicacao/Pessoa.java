@@ -30,10 +30,12 @@ public class Pessoa implements Entidade {
     
     
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -42,7 +44,9 @@ public class Pessoa implements Entidade {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(String nome) throws ViolacaoRegraNegocioException {
+        if(nome.length() < 4)
+            throw new ViolacaoRegraNegocioException("O nome deve ser maior do que 4 caracteres!");
         this.nome = nome;
     }
 
@@ -50,7 +54,9 @@ public class Pessoa implements Entidade {
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(String login) throws ViolacaoRegraNegocioException {
+        if(login.length() < 4)
+            throw new ViolacaoRegraNegocioException("O login deve ser maior do que 4 caracteres!");
         this.login = login;
     }
 
@@ -58,7 +64,9 @@ public class Pessoa implements Entidade {
         return senha;
     }
 
-    public void setSenha(String senha) {
+    public void setSenha(String senha) throws ViolacaoRegraNegocioException {
+        if(senha.length() < 5)
+            throw new ViolacaoRegraNegocioException("O senha deve ser maior do que 5 caracteres!");
         this.senha = senha;
     }
 
