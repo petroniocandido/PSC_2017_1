@@ -5,13 +5,23 @@
  */
 package reservasala_apresentacao;
 
+import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Pessoa;
+import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.PessoaRepositorio;
+import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Reserva;
+import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.ReservaRepositorio;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Sala;
 import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.SalaRepositorio;
+import br.edu.ifnmg.PSC.ReservaSala.Persistencia.PessoaDAO;
+import br.edu.ifnmg.PSC.ReservaSala.Persistencia.ReservaDAO;
 import br.edu.ifnmg.PSC.ReservaSala.Persistencia.SalaDAO;
 import java.sql.SQLException;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -23,20 +33,37 @@ public class ReservaSala_Apresentacao {
      * @param args the command line arguments
      */
     public static void main(String[] args)  {
-       
         try {
-            SalaRepositorio dao = new SalaDAO();
-            
+            SalaRepositorio salas = new SalaDAO();
+            PessoaRepositorio pessoas = new PessoaDAO();
+            ReservaRepositorio reservas = new ReservaDAO();
             /*
-            for(int i = 4; i < 16; i++){
-                Sala s = new Sala(0, "Sala nº " + Integer.toString(i), Tipo.AULA, i + 4);
-                dao.Salvar(s);
-            }*/
+            Sala sala1 = salas.Abrir(1);
+            Pessoa pessoa1 = pessoas.Abrir(1);
             
-            List<Sala> resultado = dao.Buscar(new Sala(0,null,null,12));
+            Reserva reserva = new Reserva();
+            reserva.setInicio(new Date());
+            reserva.setTermino(new Date());
+            reserva.setPessoa(pessoa1);
+            reserva.setSala(sala1);
+            */
             
-            for(Sala s : resultado)
-                System.out.println(s);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            
+            try {
+                Date inicio = df.parse("2017-07-13 13:00:00");
+                Date termino = df.parse("2017-07-13 17:00:00");
+                
+                Reserva filtro = new Reserva();
+                filtro.setInicio(inicio);
+                filtro.setTermino(termino);
+                
+                for(Reserva r : reservas.Buscar(filtro))
+                    System.out.print(r);
+                
+            } catch (ParseException ex) {
+                Logger.getLogger(ReservaSala_Apresentacao.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             
         } catch (ClassNotFoundException ex) {
