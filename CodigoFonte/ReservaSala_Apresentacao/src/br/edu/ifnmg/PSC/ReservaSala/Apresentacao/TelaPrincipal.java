@@ -5,17 +5,40 @@
  */
 package br.edu.ifnmg.PSC.ReservaSala.Apresentacao;
 
+import br.edu.ifnmg.PSC.ReservaSala.Aplicacao.Aplicacao;
+
 /**
  *
  * @author petronio
  */
 public class TelaPrincipal extends javax.swing.JFrame {
+    
+    TelaLogin telalogin;
 
+    public void setTelalogin(TelaLogin telalogin) {
+        this.telalogin = telalogin;
+    }
+    
+    
+    
     /**
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() {
+        
+        if(!Aplicacao.isLogged()){
+            if(telalogin == null)
+                telalogin = new TelaLogin();
+            
+            telalogin.setVisible(true);
+            this.setVisible(false);
+            return;
+        }
+        
         initComponents();
+        
+        
+        
     }
 
     /**
