@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e8043340-89e2-4757-80d6-869cef89260a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<field name="inicio" class="java.util.Date"/>
+	<field name="termino" class="java.util.Date"/>
+	<field name="pessoa.nome" class="java.lang.String"/>
+	<field name="sala.nome" class="java.lang.String"/>
+	<field name="sala.tipo" class="java.lang.String"/>
+	<variable name="variavel1" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="22" width="555" height="34" uuid="92b6e3d0-b9a1-4f85-aea1-02c51aacebb2"/>
+				<textElement textAlignment="Center">
+					<font size="28" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Listagem Geral de Reservas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="c7983a88-0c78-49d5-bb7d-a204483a33f7"/>
+				<text><![CDATA[Sala]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="2" width="180" height="20" uuid="640f3a8f-bd6c-4f2f-bb0d-374fd963ebd2"/>
+				<text><![CDATA[Responsável]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="336" y="2" width="100" height="20" uuid="aadd6edb-fc7a-4be0-b696-d8b3340d9113"/>
+				<text><![CDATA[Data Início]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="2" width="100" height="20" uuid="0e95c124-16b4-4789-b6a3-37e4d6fe5343"/>
+				<text><![CDATA[Data Fim]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="143" height="20" uuid="ccaa0f3d-da92-449b-8c8f-d77010d6da8b"/>
+				<textFieldExpression><![CDATA[$F{sala.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="1" width="180" height="20" uuid="6d1c865e-9e6b-4f6f-b1a2-ad15fa8a3e08"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{pessoa.nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="336" y="0" width="100" height="20" uuid="932e1154-89f2-4441-86ed-36f372e542f7"/>
+				<textFieldExpression><![CDATA[$F{inicio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="436" y="0" width="100" height="20" uuid="6e00f3e0-418b-4841-a768-a065d30c0fd5"/>
+				<textFieldExpression><![CDATA[$F{termino}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="81" y="22" width="114" height="20" uuid="fe52c923-057a-4dfd-9375-d2869a10cc8d"/>
+				<text><![CDATA[Relatório Gerado por:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="195" y="22" width="100" height="20" uuid="750f755d-3c9d-4971-bfd2-5403b1a3af95"/>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
